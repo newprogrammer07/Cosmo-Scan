@@ -1,4 +1,4 @@
-// frontend/src/types.ts
+
 
 export enum RiskLevel {
   None = 'None',
