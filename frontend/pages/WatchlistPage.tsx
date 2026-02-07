@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GlassCard from '../components/GlassCard';
 import Loader from '../components/Loader';
-import { TrashIcon, ChevronRightIcon } from '../components/icons'; // Ensure TrashIcon exists or use a text button
+import { TrashIcon, ChevronRightIcon } from '../components/icons'; 
 import { useAuthStore } from '../store/useAuthStore';
 import RiskIndicator from '../components/RiskIndicator';
 import { RiskLevel } from '../types';
 
-// Reusing your glow map for consistency
+
 const riskGlowMap: Record<string, string> = {
     "None": 'shadow-sm border-gray-500/30',
     "Low": 'shadow-[0_0_10px_rgba(34,197,94,0.2)] border-green-500/40',
@@ -47,12 +47,12 @@ const WatchlistPage: React.FC = () => {
         fetchWatchlist();
     }, [user]);
 
-    // 2. Remove Item Function
+    
     const removeFromWatchlist = async (id: number) => {
         if (!confirm("Stop tracking this object?")) return;
         try {
             await fetch(`http://localhost:5000/watchlist/${id}`, { method: 'DELETE' });
-            setWatchlist(prev => prev.filter(item => item.id !== id)); // Update UI instantly
+            setWatchlist(prev => prev.filter(item => item.id !== id));
         } catch (error) {
             console.error("Failed to remove", error);
         }
