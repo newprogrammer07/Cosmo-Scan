@@ -26,7 +26,7 @@ const MagneticButton: React.FC<MagneticButtonProps> = ({ children, onClick, clas
     setPosition({ x: 0, y: 0 });
   };
 
-  // FIX: Reset position if the button becomes disabled to avoid it getting stuck in a hover state.
+  
   React.useEffect(() => {
     if (disabled) {
       setPosition({ x: 0, y: 0 });

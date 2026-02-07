@@ -1,6 +1,5 @@
 
-// FIX: Added a triple-slash directive to include React Three Fiber's JSX type definitions, resolving TypeScript errors for 3D components.
-/// <reference types="@react-three/fiber" />
+
 import React, { Suspense, useRef, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Canvas, useFrame } from '@react-three/fiber';
@@ -8,16 +7,12 @@ import { Stars, Sparkles, Cloud } from '@react-three/drei';
 import * as THREE from 'three';
 import { useIsMobile, usePrefersReducedMotion } from '../hooks/useMedia';
 
-/**
- * Renders a performant, decorative starfield.
- */
+
 const Starfield: React.FC<{ count: number }> = React.memo(({ count }) => {
   return <Stars radius={150} depth={50} count={count} factor={5} saturation={0} fade speed={0.5} />;
 });
 
-/**
- * Renders a low-poly, rotating Earth model.
- */
+
 const Earth: React.FC = React.memo(() => {
     const meshRef = useRef<THREE.Mesh>(null!);
     useFrame((_, delta) => {
@@ -34,9 +29,7 @@ const Earth: React.FC = React.memo(() => {
     );
 });
 
-/**
- * Renders a belt of instanced meshes to simulate orbiting asteroids.
- */
+
 const AsteroidBelt: React.FC = React.memo(() => {
   const count = 100;
   const instancedMeshRef = useRef<THREE.InstancedMesh>(null!);
@@ -79,22 +72,19 @@ const AsteroidBelt: React.FC = React.memo(() => {
   );
 });
 
-/**
- * The main scene controller. It determines which 3D elements to render based on the current route.
- * It also handles camera parallax effects.
- */
+
 const SceneContent: React.FC = () => {
   const location = useLocation();
   const isMobile = useIsMobile();
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  // Degrade visual fidelity for performance and accessibility
+  
   const starCount = isMobile || prefersReducedMotion ? 1000 : 5000;
   const isDashboard = location.pathname === '/dashboard';
   const isDetail = location.pathname.startsWith('/object/');
 
   useFrame((state) => {
-    // Add subtle camera parallax based on mouse position
+    
     if (!prefersReducedMotion) {
       state.camera.position.x = THREE.MathUtils.lerp(state.camera.position.x, state.mouse.x / 4, 0.05);
       state.camera.position.y = THREE.MathUtils.lerp(state.camera.position.y, state.mouse.y / 4, 0.05);
@@ -138,10 +128,7 @@ const SceneContent: React.FC = () => {
   );
 };
 
-/**
- * The main wrapper component for the 3D background.
- * It sets up the canvas and positions it behind all other content.
- */
+
 const ThreeBackground: React.FC = () => {
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -1, pointerEvents: 'none', background: '#000' }}>
