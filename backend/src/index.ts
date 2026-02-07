@@ -1,4 +1,4 @@
-// backend/src/index.ts
+
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import cors from "cors";
@@ -11,31 +11,26 @@ import axios from "axios";
 const app = express();
 const prisma = new PrismaClient();
 
-// 1. Configure CORS
+
 app.use(cors());
 app.use(express.json());
 
-// 2. Create the HTTP Server
+
 const httpServer = createServer(app);
 
-// 3. Attach Socket.io
+
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000", // Ensure this matches your Frontend URL
+    origin: "http://localhost:3000", 
     methods: ["GET", "POST"]
   }
 });
 
-// ==========================
-//    CONFIGURATION
-// ==========================
 
-// NOTE: Use your real key here.
 const NASA_API_KEY = "WNPkhdFsOd6iXQPXbufix0CCiBZ5IxBdv694hwRh"; 
 const NASA_URL = "https://api.nasa.gov/neo/rest/v1/feed";
 
-// --- MOCK DATA FALLBACK (Safety Net) ---
-// Used if NASA API fails or rate limits are hit
+
 const MOCK_ASTEROIDS = [
     {
         id: "2023-QW", name: "(2023 QW)", estimated_diameter_km: { min: 0.12, max: 0.28 }, is_potentially_hazardous_asteroid: true,
@@ -59,24 +54,20 @@ const MOCK_ASTEROIDS = [
     }
 ];
 
-// ==========================
-//    NASA REAL-TIME SCHEDULER
-// ==========================
 
-// Run every day at 9:00 AM to check for new data
 cron.schedule('0 9 * * *', async () => {
   console.log("🛰️ DAILY SCAN: Checking NASA Databases...");
 
   try {
     const today = new Date().toISOString().split('T')[0];
     
-    // 1. Fetch Data from NASA
+  
     const response = await axios.get(`${NASA_URL}?start_date=${today}&end_date=${today}&api_key=${NASA_API_KEY}`);
     const nearEarthObjects = response.data.near_earth_objects[today];
 
     if (!nearEarthObjects) return;
 
-    // 2. Filter for Hazardous Asteroids
+    
     const hazardous = nearEarthObjects.filter((obj: any) => obj.is_potentially_hazardous_asteroid);
 
     if (hazardous.length > 0) {
@@ -94,10 +85,10 @@ cron.schedule('0 9 * * *', async () => {
         severity: "critical"
       };
 
-      // 3. Broadcast to Frontend (Popup)
+      
       io.emit("system_alert", alertMessage);
 
-      // 4. Save to Database for the first user (Optional / Demo)
+      
       const user = await prisma.user.findFirst();
       if (user) {
         await prisma.alert.create({
@@ -118,9 +109,6 @@ cron.schedule('0 9 * * *', async () => {
   }
 });
 
-// ==========================
-//      AUTH ROUTES
-// ==========================
 
 app.post("/signup", async (req, res) => {
   try {
@@ -156,16 +144,14 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// ==========================
-//    NASA API ROUTES (ROBUST)
-// ==========================
+
 
 app.get("/asteroids", async (req, res) => {
   try {
     const today = new Date();
     const startDate = today.toISOString().split('T')[0];
     
-    // Fetch 7 days of data to ensure we always have something to show
+    
     const nextWeek = new Date(today);
     nextWeek.setDate(today.getDate() + 7);
     const endDate = nextWeek.toISOString().split('T')[0];
@@ -174,7 +160,7 @@ app.get("/asteroids", async (req, res) => {
     
     const response = await axios.get(`${NASA_URL}?start_date=${startDate}&end_date=${endDate}&api_key=${NASA_API_KEY}`);
     
-    // Check if data structure is valid
+    
     if (!response.data || !response.data.near_earth_objects) {
         throw new Error("Invalid Data Structure from NASA");
     }
@@ -182,18 +168,18 @@ app.get("/asteroids", async (req, res) => {
     const nearEarthObjects = response.data.near_earth_objects;
     let allAsteroids: any[] = [];
 
-    // Flatten the date-based object into a single array
+    
     Object.keys(nearEarthObjects).forEach(date => {
       allAsteroids = [...allAsteroids, ...nearEarthObjects[date]];
     });
 
-    // Transform to match Frontend Interface
+    
     const formattedAsteroids = allAsteroids.map((obj: any) => {
       let risk = "None";
       const size = obj.estimated_diameter?.meters?.estimated_diameter_max || 0;
       const isHazard = obj.is_potentially_hazardous_asteroid;
       
-      // Calculate Risk Level Logic
+      
       if (isHazard) {
         if (size > 200) risk = "Critical";
         else if (size > 100) risk = "High";
@@ -232,16 +218,12 @@ app.get("/asteroids", async (req, res) => {
     console.error("⚠️ NASA API Failed:", error.message);
     console.log("🔄 Switching to FALLBACK MODE (Mock Data)");
     
-    // RETURN MOCK DATA INSTEAD OF CRASHING
+    
     res.json(MOCK_ASTEROIDS);
   }
 });
 
-// ==========================
-//    WATCHLIST ROUTES (NEW)
-// ==========================
 
-// 1. Add to Watchlist
 app.post("/watchlist", async (req, res) => {
   try {
     const { asteroidId, name, risk, date, email } = req.body;
@@ -249,7 +231,7 @@ app.post("/watchlist", async (req, res) => {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    // Check if already in watchlist
+    
     const existing = await prisma.watchlist.findFirst({
       where: { asteroidId, userId: user.id }
     });
@@ -273,7 +255,7 @@ app.post("/watchlist", async (req, res) => {
   }
 });
 
-// 2. Get Watchlist
+
 app.get("/watchlist", async (req, res) => {
   const { email } = req.query;
   if (!email) return res.status(400).json({ error: "Email required" });
@@ -287,18 +269,14 @@ app.get("/watchlist", async (req, res) => {
   res.json(user.watchlist);
 });
 
-// 3. Remove from Watchlist
+
 app.delete("/watchlist/:id", async (req, res) => {
   const { id } = req.params;
   await prisma.watchlist.delete({ where: { id: Number(id) } });
   res.json({ success: true });
 });
 
-// ==========================
-//      ALERT ROUTES
-// ==========================
 
-// 1. Get All Alerts
 app.get("/alerts", async (req, res) => {
   const { email } = req.query;
   if (!email) return res.status(400).json({ error: "Email required" });
@@ -312,7 +290,7 @@ app.get("/alerts", async (req, res) => {
   res.json(user.alerts);
 });
 
-// 2. Create Alert
+
 app.post("/alerts", async (req, res) => {
   const { name, threshold, email } = req.body;
   const user = await prisma.user.findUnique({ where: { email } });
@@ -324,7 +302,7 @@ app.post("/alerts", async (req, res) => {
   res.json(newAlert);
 });
 
-// 3. Toggle Alert (Enable/Disable)
+
 app.patch("/alerts/:id", async (req, res) => {
   const { id } = req.params;
   const { enabled } = req.body;
@@ -335,16 +313,14 @@ app.patch("/alerts/:id", async (req, res) => {
   res.json(updatedAlert);
 });
 
-// 4. Delete Alert
+
 app.delete("/alerts/:id", async (req, res) => {
   const { id } = req.params;
   await prisma.alert.delete({ where: { id: Number(id) } });
   res.json({ success: true });
 });
 
-// ==========================
-//    REAL-TIME SOCKETS (Updated to Save Data)
-// ==========================
+
 
 io.on("connection", (socket) => {
   console.log("⚡ A user connected:", socket.id);
@@ -352,7 +328,7 @@ io.on("connection", (socket) => {
   socket.on("send_message", async (data) => {
     console.log("Message received:", data);
 
-    // 1. SAVE TO DATABASE (This was missing!)
+    
     try {
       await prisma.message.create({
         data: {
@@ -365,7 +341,7 @@ io.on("connection", (socket) => {
       console.error("Failed to save message to DB:", err);
     }
 
-    // 2. BROADCAST TO OTHERS
+    
     socket.broadcast.emit("receive_message", data);
   });
 
@@ -373,10 +349,9 @@ io.on("connection", (socket) => {
     console.log("User disconnected:", socket.id);
   });
 });
-// --- RISK ANALYSIS ENGINE (SCIENTIFIC FORMULA) ---
+
 const calculateRiskScore = (obj: any) => {
-    // 1. EXTRACT & SANITIZE INPUTS
-    // Diameter: Try meters first, fallback to km * 1000, default to 0
+   
     let diameter = obj.estimated_diameter?.meters?.estimated_diameter_max;
     if (!diameter && obj.estimated_diameter?.kilometers?.estimated_diameter_max) {
         diameter = obj.estimated_diameter.kilometers.estimated_diameter_max * 1000;
@@ -386,22 +361,21 @@ const calculateRiskScore = (obj: any) => {
     const velocity = parseFloat(obj.close_approach_data?.[0]?.relative_velocity?.kilometers_per_second || "0");
     const missDistance = parseFloat(obj.close_approach_data?.[0]?.miss_distance?.kilometers || "999999999");
 
-    // 2. NORMALIZE INPUTS (Map to 0-100)
-    // Diameter: Cap at 1000m (1km) -> 100 points
+   
     const normDiameter = Math.min(100, (diameter / 1000) * 100);
     
-    // Velocity: Cap at 50 km/s -> 100 points
+    
     const normVelocity = Math.min(100, (velocity / 50) * 100);
     
-    // Distance: Lunar Distance (384,400 km) -> 100 points
+    
     const lunarDistance = 384400;
     const effectiveDistance = missDistance > 0 ? missDistance : 1; 
     const normDistance = Math.min(100, (lunarDistance / effectiveDistance) * 100);
 
-    // 3. APPLY FORMULA: (Diameter * 0.4) + (Velocity * 0.3) + (1/Distance * 0.3)
+    
     let totalScore = (normDiameter * 0.4) + (normVelocity * 0.3) + (normDistance * 0.3);
 
-    // 4. CRITICAL OVERRIDE
+    
     if (obj.is_potentially_hazardous_asteroid) {
         totalScore = Math.max(totalScore, 50); 
     }
@@ -409,13 +383,11 @@ const calculateRiskScore = (obj: any) => {
     return Math.round(totalScore);
 };
 
-// ==========================
-//    DATA ROUTES (UNIFIED)
-// ==========================
+
 app.get("/asteroids", async (req, res) => {
-  // Helper to format any asteroid object (Real or Mock)
+  
   const formatAsteroid = (obj: any) => {
-      const riskScore = calculateRiskScore(obj); // Uses the Scientific Formula
+      const riskScore = calculateRiskScore(obj); 
 
       let riskLabel = "None";
       if (riskScore >= 75) riskLabel = "Critical";
@@ -442,7 +414,7 @@ app.get("/asteroids", async (req, res) => {
             inclination: obj.orbital_data?.inclination || "0"
         },
         risk: riskLabel,
-        risk_score: riskScore // IMPORTANT: Sends the score to Frontend
+        risk_score: riskScore 
       };
   };
 
@@ -473,14 +445,10 @@ app.get("/asteroids", async (req, res) => {
     res.json(formattedMock);
   }
 });
-// ==========================
-//    CHAT ROUTES (You are missing this!)
-// ==========================
 
-// GET /messages - Load chat history
 app.get("/messages", async (req, res) => {
   try {
-    // Fetch last 50 messages ordered by time
+    
     const messages = await prisma.message.findMany({
       take: 50,
       orderBy: { createdAt: 'asc' }
@@ -490,9 +458,7 @@ app.get("/messages", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch messages" });
   }
 });
-// ==========================
-//      START SERVER
-// ==========================
+
 
 const PORT = 5000;
 httpServer.listen(PORT, () => {
