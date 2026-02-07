@@ -5,11 +5,11 @@ import { useAlertStore } from '../store/useAlertStore'; // <--- NEW STORE
 import { TrashIcon, BellIcon, ShieldAlertIcon } from '../components/icons';
 
 const AlertsPage: React.FC = () => {
-    // USE GLOBAL STORE
+    
     const { alerts, fetchAlerts, addAlert, toggleAlert, deleteAlert } = useAlertStore();
     const [threshold, setThreshold] = useState(50);
 
-    // Fetch alerts when page loads
+    
     useEffect(() => {
         fetchAlerts();
     }, []);
