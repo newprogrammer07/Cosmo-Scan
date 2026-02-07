@@ -3,7 +3,7 @@ import { Canvas, useFrame, ThreeElements } from '@react-three/fiber';
 import { Stars } from '@react-three/drei';
 import * as THREE from 'three';
 
-// 1. Correctly extend the JSX namespace for Three.js elements
+
 declare global {
   namespace React {
     namespace JSX {
@@ -12,7 +12,7 @@ declare global {
   }
 }
 
-// 2. Earth Component: Fixed to use sphereGeometry and proper scale
+
 const Earth = () => {
   const meshRef = useRef<THREE.Mesh>(null!);
   
@@ -40,7 +40,7 @@ interface AsteroidProps {
   index: number;
 }
 
-// 3. Asteroid Component: Handles individual orbital math
+
 const Asteroid: React.FC<AsteroidProps> = ({ index }) => {
   const meshRef = useRef<THREE.Mesh>(null!);
 
@@ -72,7 +72,7 @@ const Asteroid: React.FC<AsteroidProps> = ({ index }) => {
   );
 };
 
-// 4. Scene Controller: Handles Parallax and lighting 
+
 const SceneContent = () => {
   const starsRef = useRef<THREE.Group>(null!);
   
@@ -102,7 +102,7 @@ const SceneContent = () => {
   );
 };
 
-// 5. Final Hero Scene Wrapper [cite: 9, 33]
+
 const HeroScene: React.FC = () => {
   return (
     <div style={{ width: '100%', height: '100vh', background: '#000' }}>
