@@ -1,0 +1,54 @@
+// backend/prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String      @id @default(uuid())
+  email     String      @unique
+  password  String
+  name      String
+  createdAt DateTime    @default(now())
+  
+  // Relations
+  alerts    Alert[]
+  watchlist Watchlist[] // <--- NEW: Relation to Watchlist
+}
+
+model Alert {
+  id        Int      @id @default(autoincrement())
+  name      String
+  threshold Int
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+// --- NEW MODEL: WATCHLIST ---
+model Watchlist {
+  id         Int      @id @default(autoincrement())
+  asteroidId String
+  name       String
+  risk       String
+  date       String
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+// --- NEW MODEL: CHAT MESSAGES ---
+model Message {
+  id        Int      @id @default(autoincrement())
+  user      String
+  text      String
+  timestamp String
+  createdAt DateTime @default(now())
+}
+
