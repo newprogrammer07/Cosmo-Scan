@@ -34,23 +34,23 @@ const Tour: React.FC = () => {
                 width: rect.width,
                 height: rect.height,
             });
-            // Focus for accessibility
+            
             if (element instanceof HTMLElement) {
                 element.focus({ preventScroll: true });
             }
         } else {
-             // If element not found, maybe move to next step or end tour
+             
             nextStep();
         }
     }
     
-    // Initial update
+    
     updateHighlight();
 
-    // The timeout ensures the element is visible after any state changes/rerenders
+    
     const timeoutId = setTimeout(updateHighlight, 100);
 
-    // Re-calculate on resize
+    
     window.addEventListener('resize', updateHighlight);
 
     return () => {
@@ -92,7 +92,7 @@ const Tour: React.FC = () => {
             break;
     }
 
-    // Clamp to viewport
+    
     style.left = Math.max(margin, Math.min(style.left as number, window.innerWidth - tooltipRect.width - margin));
     style.top = Math.max(margin, Math.min(style.top as number, window.innerHeight - tooltipRect.height - margin));
 
