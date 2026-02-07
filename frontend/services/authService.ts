@@ -1,16 +1,15 @@
 import { User } from '../store/useAuthStore';
-
-
-const API_URL = 'http://localhost:5000'; 
+// IMPORT THE CONFIG VARIABLE
+import { API_BASE_URL } from '../config'; 
 
 export interface AuthResponse {
     token: string;
     user: User;
 }
 
-
 export const login = async (email: string, password: string): Promise<AuthResponse> => {
-    const response = await fetch(`${API_URL}/login`, {
+    // FIX: Use API_BASE_URL instead of hardcoded localhost
+    const response = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -21,16 +20,15 @@ export const login = async (email: string, password: string): Promise<AuthRespon
     const data = await response.json();
 
     if (!response.ok) {
-        
         throw new Error(data.error || 'Login failed');
     }
 
     return data;
 };
 
-
 export const signup = async (name: string, email: string, password: string): Promise<{ success: boolean }> => {
-    const response = await fetch(`${API_URL}/signup`, {
+    // FIX: Use API_BASE_URL instead of hardcoded localhost
+    const response = await fetch(`${API_BASE_URL}/signup`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -44,6 +42,5 @@ export const signup = async (name: string, email: string, password: string): Pro
         throw new Error(data.error || 'Signup failed');
     }
 
-   
     return { success: true };
 };

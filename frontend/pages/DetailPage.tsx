@@ -11,6 +11,8 @@ import MagneticButton from '../components/MagneticButton';
 import { useAppStore } from '../store/useAppStore';
 import { useAuthStore } from '../store/useAuthStore';
 import RiskIndicator from '../components/RiskIndicator';
+// IMPORT THE CONFIG VARIABLE HERE
+import { API_BASE_URL } from '../config'; 
 
 
 const OrbitalScene: React.FC<{ asteroid: Asteroid }> = ({ asteroid }) => {
@@ -109,19 +111,6 @@ const OrbitalScene: React.FC<{ asteroid: Asteroid }> = ({ asteroid }) => {
   );
 };
 
-
-const riskMeterColor = (risk: RiskLevel): string => {
-  switch (risk) {
-    case RiskLevel.None: return 'bg-slate-500';
-    case RiskLevel.Low: return 'bg-emerald-500';
-    case RiskLevel.Moderate: return 'bg-amber-500';
-    case RiskLevel.High: return 'bg-orange-500';
-    case RiskLevel.Critical: return 'bg-red-500';
-    default: return 'bg-slate-700';
-  }
-};
-
-
 const DetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -146,7 +135,8 @@ const DetailPage: React.FC = () => {
   const handleAddToWatchlist = async () => {
     if (!asteroid || !user) return alert("Please log in.");
     try {
-        const res = await fetch('http://localhost:5000/watchlist', {
+        // FIX: Use dynamic API URL from config
+        const res = await fetch(`${API_BASE_URL}/watchlist`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -170,7 +160,8 @@ const DetailPage: React.FC = () => {
   const handleCreateAlert = async () => {
     if (!asteroid || !user) return alert("Please log in.");
     try {
-        const res = await fetch('http://localhost:5000/alerts', {
+        // FIX: Use dynamic API URL from config
+        const res = await fetch(`${API_BASE_URL}/alerts`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -222,7 +213,7 @@ const DetailPage: React.FC = () => {
             </div>
           </div>
           
-          {/* --- THREAT ASSESSMENT SECTION (NEW SCORE BAR) --- */}
+          {/* --- THREAT ASSESSMENT SECTION --- */}
           <div className="mb-8 p-4 bg-white/5 rounded-2xl border border-white/5">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Threat Assessment</h2>
@@ -235,10 +226,10 @@ const DetailPage: React.FC = () => {
             </div>
             
             <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden relative">
-               <div className="absolute inset-0 flex justify-between px-1">
-                   {[...Array(10)].map((_, i) => <div key={i} className="w-px h-full bg-black/20" />)}
-               </div>
-               
+                <div className="absolute inset-0 flex justify-between px-1">
+                    {[...Array(10)].map((_, i) => <div key={i} className="w-px h-full bg-black/20" />)}
+                </div>
+                
               <div 
                 className={`h-full transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(255,255,255,0.4)] ${
                     (asteroid.risk_score || 0) > 80 ? 'bg-red-500' : 

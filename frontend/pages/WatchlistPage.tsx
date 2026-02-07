@@ -6,6 +6,8 @@ import { TrashIcon, ChevronRightIcon } from '../components/icons';
 import { useAuthStore } from '../store/useAuthStore';
 import RiskIndicator from '../components/RiskIndicator';
 import { RiskLevel } from '../types';
+// IMPORT THE CONFIG VARIABLE HERE
+import { API_BASE_URL } from '../config'; 
 
 
 const riskGlowMap: Record<string, string> = {
@@ -35,7 +37,8 @@ const WatchlistPage: React.FC = () => {
         if (!user) return;
         const fetchWatchlist = async () => {
             try {
-                const res = await fetch(`http://localhost:5000/watchlist?email=${user.email}`);
+                // FIX: Use dynamic API URL from config
+                const res = await fetch(`${API_BASE_URL}/watchlist?email=${user.email}`);
                 const data = await res.json();
                 setWatchlist(data);
             } catch (error) {
@@ -51,7 +54,8 @@ const WatchlistPage: React.FC = () => {
     const removeFromWatchlist = async (id: number) => {
         if (!confirm("Stop tracking this object?")) return;
         try {
-            await fetch(`http://localhost:5000/watchlist/${id}`, { method: 'DELETE' });
+            // FIX: Use dynamic API URL from config
+            await fetch(`${API_BASE_URL}/watchlist/${id}`, { method: 'DELETE' });
             setWatchlist(prev => prev.filter(item => item.id !== id));
         } catch (error) {
             console.error("Failed to remove", error);

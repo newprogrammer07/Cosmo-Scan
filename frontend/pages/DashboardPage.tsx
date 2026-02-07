@@ -10,7 +10,8 @@ import { useTourStore } from '../store/useTourStore';
 import { useAuthStore } from '../store/useAuthStore';
 import RiskIndicator from '../components/RiskIndicator';
 import LivePulseIndicator from '../components/LivePulseIndicator';
-
+// IMPORT THE CONFIG VARIABLE HERE
+import { API_BASE_URL } from '../config';
 
 const riskGlowMap: Record<RiskLevel, string> = {
     [RiskLevel.None]: 'shadow-sm border-gray-500/30',
@@ -54,7 +55,8 @@ const DashboardPage: React.FC = () => {
     const addToWatchlist = async (asteroid: Asteroid) => {
         if (!user) return alert("Please log in to use features.");
         try {
-            const res = await fetch('http://localhost:5000/watchlist', {
+            // FIX: Use dynamic API URL
+            const res = await fetch(`${API_BASE_URL}/watchlist`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -85,6 +87,7 @@ const DashboardPage: React.FC = () => {
     const fetchData = useCallback(async () => {
         setLiveDataStatus('live');
         try {
+            // Note: Ensure getAsteroids() in asteroidService.ts is also updated to use API_BASE_URL!
             const data = await getAsteroids();
             setAsteroids(data);
             setLiveDataStatus('idle');

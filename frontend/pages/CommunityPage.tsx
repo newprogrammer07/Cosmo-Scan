@@ -4,6 +4,8 @@ import MagneticButton from '../components/MagneticButton';
 import { useAuthStore } from '../store/useAuthStore'; 
 import { useAppStore } from '../store/useAppStore'; 
 import { io } from 'socket.io-client';
+// IMPORT THE CONFIG VARIABLE HERE
+import { API_BASE_URL } from '../config'; 
 import { 
   LineChart, 
   Line, 
@@ -26,26 +28,24 @@ interface Message {
 const CommunityPage: React.FC = () => {
   
   const { user } = useAuthStore(); 
-  
-  
   const { communityChartData, addChartPoint } = useAppStore();
-
   
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
+  // FIX 1: Use the dynamic API URL for the Socket connection
+  const socket = useMemo(() => io(API_BASE_URL), []);
   
-  const socket = useMemo(() => io('http://localhost:5000'), []);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  
+  // Load Chat History
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await fetch('http://localhost:5000/messages');
+        // FIX 2: Use the dynamic API URL for fetching data
+        const res = await fetch(`${API_BASE_URL}/messages`);
         const data = await res.json();
-        
         
         if (Array.isArray(data) && data.length > 0) {
             setMessages(data);
@@ -60,19 +60,17 @@ const CommunityPage: React.FC = () => {
     fetchHistory();
   }, []);
 
-  
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
   useEffect(scrollToBottom, [messages]);
 
-  
+  // Simulate Random Data for the Chart (Client-side visual only)
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
       const timeString = now.toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
       const randomValue = Math.floor(Math.random() * (100 - 40 + 1)) + 40;
-
       
       addChartPoint({ time: timeString, value: randomValue });
     }, 2000);
@@ -80,7 +78,7 @@ const CommunityPage: React.FC = () => {
     return () => clearInterval(interval);
   }, [addChartPoint]);
 
-  
+  // Listen for incoming messages via Socket
   useEffect(() => {
     socket.on('receive_message', (data: Message) => {
       setMessages((prev) => [...prev, data]);
@@ -91,7 +89,7 @@ const CommunityPage: React.FC = () => {
     };
   }, [socket]);
 
- 
+  // Handle Sending Messages
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (newMessage.trim() === '') return;
@@ -99,16 +97,15 @@ const CommunityPage: React.FC = () => {
     if (!user) return alert("Please log in to transmit messages.");
 
     const messageData = {
-      
       user: user.name, 
       text: newMessage,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
 
-    
+    // Emit to Backend
     socket.emit('send_message', messageData);
     
-    
+    // Optimistically add to UI
     setMessages((prev) => [...prev, { ...messageData, id: Date.now() }]);
     setNewMessage('');
   };
