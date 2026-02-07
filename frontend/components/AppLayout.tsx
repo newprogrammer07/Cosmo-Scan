@@ -1,27 +1,27 @@
 import React, { useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
-import { DashboardIcon, AlertIcon, CommunityIcon } from './icons'; // Ensure icons are imported
+import { DashboardIcon, AlertIcon, CommunityIcon } from './icons'; 
 import { useAppStore } from '../store/useAppStore';
-import { useAlertStore } from '../store/useAlertStore'; // <--- NEW STORE
+import { useAlertStore } from '../store/useAlertStore'; 
 
 const AppLayout: React.FC = () => {
   const location = useLocation();
   const { isCommandCenterMode, isDemoMode } = useAppStore();
-  const { alerts, fetchAlerts } = useAlertStore(); // <--- Get alerts
+  const { alerts, fetchAlerts } = useAlertStore(); 
 
-  // Fetch alerts when layout loads so the badge is accurate
+  
   useEffect(() => {
     fetchAlerts();
   }, []);
 
-  // Calculate active alerts count
+  
   const activeAlertsCount = alerts.filter(a => a.enabled).length;
 
   const showNav = !(isCommandCenterMode && location.pathname === '/dashboard');
 
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
-    // --- NEW WATCHLIST ITEM ---
+    
   { path: '/watchlist', label: 'Watchlist', icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -29,7 +29,7 @@ const AppLayout: React.FC = () => {
       </svg>
     ) 
   },
-  // --------------------------
+ 
     { 
       path: '/alerts', 
       label: 'Alerts', 

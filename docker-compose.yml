@@ -1,45 +1,45 @@
 version: '3.8'
 
 services:
-  # --- Service 1: The Database ---
+  
   postgres:
     image: postgres:15-alpine
     container_name: cosmic_db
     restart: always
     environment:
-      POSTGRES_USER: cosmic_user        # Define a user
-      POSTGRES_PASSWORD: cosmic_password # Define a password
-      POSTGRES_DB: cosmic_watch_db      # Define the DB name
+      POSTGRES_USER: cosmic_user        
+      POSTGRES_PASSWORD: cosmic_password 
+      POSTGRES_DB: cosmic_watch_db      
     ports:
-      - "5432:5432" # Allows you to access DB from your laptop tools if needed
+      - "5432:5432" 
     volumes:
-      - postgres_data:/var/lib/postgresql/data # PERSISTENCE: Keeps data alive even if container stops
+      - postgres_data:/var/lib/postgresql/data 
 
-  # --- Service 2: The Backend API ---
+  
   backend:
-    build: ./backend # Use the Dockerfile in /backend folder
+    build: ./backend 
     container_name: cosmic_backend
     restart: always
     ports:
       - "5000:5000"
     depends_on:
-      - postgres # Wait for DB to start before starting backend
+      - postgres 
     environment:
-      # Connection String: Uses 'postgres' (service name) as the host
+      
       DATABASE_URL: "postgresql://cosmic_user:cosmic_password@postgres:5432/cosmic_watch_db"
-      # Your NASA Key
+     
       NASA_API_KEY: "WNPkhdFsOd6iXQPXbufix0CCiBZ5IxBdv694hwRh" 
 
-  # --- Service 3: The Frontend UI ---
+ 
   frontend:
-    build: ./frontend # Use the Dockerfile in /frontend folder
+    build: ./frontend 
     container_name: cosmic_frontend
     restart: always
     ports:
-      - "3000:80" # Maps localhost:3000 (browser) -> Container Port 80 (Nginx)
+      - "3000:80" 
     depends_on:
       - backend
 
-# Define where to store the database files persistently
+
 volumes:
   postgres_data:
