@@ -41,5 +41,5 @@ To run this project, you only need **one** tool installed:
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/YOUR_GITHUB_USERNAME/cosmic-watch.git](https://github.com/newprogrammer07/Cosmo-Scan.git)
+git clone (https://github.com/newprogrammer07/Cosmo-Scan.git)
 cd cosmo-Scan
