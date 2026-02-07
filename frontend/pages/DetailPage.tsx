@@ -12,7 +12,7 @@ import { useAppStore } from '../store/useAppStore';
 import { useAuthStore } from '../store/useAuthStore';
 import RiskIndicator from '../components/RiskIndicator';
 
-// --- 3D Orbital Scene Component ---
+
 const OrbitalScene: React.FC<{ asteroid: Asteroid }> = ({ asteroid }) => {
   const [hovered, setHovered] = useState(false);
   const riskColor = asteroid.risk === RiskLevel.Critical ? '#ef4444' : '#f97316';
@@ -109,7 +109,7 @@ const OrbitalScene: React.FC<{ asteroid: Asteroid }> = ({ asteroid }) => {
   );
 };
 
-// --- Helper Functions ---
+
 const riskMeterColor = (risk: RiskLevel): string => {
   switch (risk) {
     case RiskLevel.None: return 'bg-slate-500';
@@ -121,7 +121,7 @@ const riskMeterColor = (risk: RiskLevel): string => {
   }
 };
 
-// --- Main Page Component ---
+
 const DetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -142,7 +142,7 @@ const DetailPage: React.FC = () => {
     fetchData();
   }, [id, navigate]);
 
-  // --- FUNCTION: Add to Watchlist ---
+  
   const handleAddToWatchlist = async () => {
     if (!asteroid || !user) return alert("Please log in.");
     try {
@@ -166,7 +166,7 @@ const DetailPage: React.FC = () => {
     }
   };
 
-  // --- FUNCTION: Configure Alert ---
+  
   const handleCreateAlert = async () => {
     if (!asteroid || !user) return alert("Please log in.");
     try {
@@ -319,7 +319,7 @@ const DetailPage: React.FC = () => {
   );
 };
 
-// --- UI Components ---
+
 const DataBlock: React.FC<{ label: string; value: string; highlight?: boolean }> = ({ label, value, highlight }) => (
     <div className={`p-4 rounded-2xl border ${highlight ? 'border-neon-cyan/30 bg-neon-cyan/5' : 'border-white/5 bg-white/[0.02]'} transition-colors hover:border-white/10`}>
         <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1">{label}</p>
