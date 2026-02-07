@@ -39,4 +39,5 @@ COPY --from=builder /app/prisma ./prisma
 EXPOSE 5000
 
 # Start command
-CMD ["sh", "-c", "npx prisma db push && node dist/index.js"]
+# Change your last line to this:
+CMD ["sh", "-c", "npx prisma db push --accept-data-loss && node dist/index.js"]
