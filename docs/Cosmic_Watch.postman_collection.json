@@ -1,110 +1,105 @@
 {
-	"info": {
-		"_postman_id": "b3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
-		"name": "Cosmic Watch API",
-		"description": "API Documentation for the Cosmic Watch Hackathon Project.",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "Auth",
-			"item": [
-				{
-					"name": "Signup User",
-					"request": {
-						"method": "POST",
-						"header": [
-							{ "key": "Content-Type", "value": "application/json" }
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\": \"test@cosmic.com\",\n    \"password\": \"password123\",\n    \"name\": \"Test Commander\"\n}"
-						},
-						"url": {
-							"raw": "http://localhost:5000/signup",
-							"protocol": "http",
-							"host": [ "localhost" ],
-							"port": "5000",
-							"path": [ "signup" ]
-						}
-					}
-				},
-				{
-					"name": "Login User",
-					"request": {
-						"method": "POST",
-						"header": [
-							{ "key": "Content-Type", "value": "application/json" }
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\": \"test@cosmic.com\",\n    \"password\": \"password123\"\n}"
-						},
-						"url": {
-							"raw": "http://localhost:5000/login",
-							"protocol": "http",
-							"host": [ "localhost" ],
-							"port": "5000",
-							"path": [ "login" ]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Asteroid Data",
-			"item": [
-				{
-					"name": "Get Asteroid Feed",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/asteroids",
-							"protocol": "http",
-							"host": [ "localhost" ],
-							"port": "5000",
-							"path": [ "asteroids" ]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Features",
-			"item": [
-				{
-					"name": "Get Chat History",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/messages",
-							"protocol": "http",
-							"host": [ "localhost" ],
-							"port": "5000",
-							"path": [ "messages" ]
-						}
-					}
-				},
-				{
-					"name": "Get Watchlist",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/watchlist?email=test@cosmic.com",
-							"protocol": "http",
-							"host": [ "localhost" ],
-							"port": "5000",
-							"path": [ "watchlist" ],
-							"query": [
-								{ "key": "email", "value": "test@cosmic.com" }
-							]
-						}
-					}
-				}
-			]
-		}
-	]
+    "info": {
+        "_postman_id": "b3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+        "name": "Cosmic Watch API - LIVE",
+        "description": "Live API Documentation for the Cosmic Watch Hackathon Project.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Signup User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            { "key": "Content-Type", "value": "application/json" }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"test@cosmic.com\",\n    \"password\": \"password123\",\n    \"name\": \"Test Commander\"\n}"
+                        },
+                        "url": {
+                            "raw": "https://cosmic-backend-fibq.onrender.com/signup",
+                            "protocol": "https",
+                            "host": [ "cosmic-backend", "onrender", "com" ],
+                            "path": [ "signup" ]
+                        }
+                    }
+                },
+                {
+                    "name": "Login User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            { "key": "Content-Type", "value": "application/json" }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"test@cosmic.com\",\n    \"password\": \"password123\"\n}"
+                        },
+                        "url": {
+                            "raw": "https://cosmic-backend-fibq.onrender.com/login",
+                            "protocol": "https",
+                            "host": [ "cosmic-backend", "onrender", "com" ],
+                            "path": [ "login" ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Asteroid Data",
+            "item": [
+                {
+                    "name": "Get Asteroid Feed",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "https://cosmic-backend-fibq.onrender.com/asteroids",
+                            "protocol": "https",
+                            "host": [ "cosmic-backend", "onrender", "com" ],
+                            "path": [ "asteroids" ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Features",
+            "item": [
+                {
+                    "name": "Get Chat History",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "https://cosmic-backend-fibq.onrender.com/messages",
+                            "protocol": "https",
+                            "host": [ "cosmic-backend", "onrender", "com" ],
+                            "path": [ "messages" ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Watchlist",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "https://cosmic-backend-fibq.onrender.com/watchlist?email=test@cosmic.com",
+                            "protocol": "https",
+                            "host": [ "cosmic-backend", "onrender", "com" ],
+                            "path": [ "watchlist" ],
+                            "query": [
+                                { "key": "email", "value": "test@cosmic.com" }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
 }
