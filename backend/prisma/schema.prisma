@@ -1,4 +1,4 @@
-// backend/prisma/schema.prisma
+
 
 generator client {
   provider = "prisma-client-js"
@@ -18,7 +18,7 @@ model User {
   
   // Relations
   alerts    Alert[]
-  watchlist Watchlist[] // <--- NEW: Relation to Watchlist
+  watchlist Watchlist[] 
 }
 
 model Alert {
@@ -32,7 +32,7 @@ model Alert {
   user      User     @relation(fields: [userId], references: [id])
 }
 
-// --- NEW MODEL: WATCHLIST ---
+
 model Watchlist {
   id         Int      @id @default(autoincrement())
   asteroidId String
@@ -43,7 +43,7 @@ model Watchlist {
   user       User     @relation(fields: [userId], references: [id])
 }
 
-// --- NEW MODEL: CHAT MESSAGES ---
+
 model Message {
   id        Int      @id @default(autoincrement())
   user      String
