@@ -11,7 +11,7 @@ import { useAuthStore } from '../store/useAuthStore';
 import RiskIndicator from '../components/RiskIndicator';
 import LivePulseIndicator from '../components/LivePulseIndicator';
 
-// --- Constants ---
+
 const riskGlowMap: Record<RiskLevel, string> = {
     [RiskLevel.None]: 'shadow-sm border-gray-500/30',
     [RiskLevel.Low]: 'shadow-[0_0_10px_rgba(34,197,94,0.2)] border-green-500/40',
@@ -21,7 +21,7 @@ const riskGlowMap: Record<RiskLevel, string> = {
 };
 
 const DashboardPage: React.FC = () => {
-    // --- State Management ---
+    
     const [asteroids, setAsteroids] = useState<Asteroid[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -41,7 +41,7 @@ const DashboardPage: React.FC = () => {
     const startTour = useTourStore((state) => state.startTour);
     const { user, logout } = useAuthStore();
 
-    // --- Search & Filter Logic (useMemo for performance) ---
+    
     const filteredAsteroids = useMemo(() => {
         return asteroids.filter((asteroid) => {
             const matchesSearch = asteroid.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -50,7 +50,7 @@ const DashboardPage: React.FC = () => {
         });
     }, [asteroids, searchQuery, riskFilter]);
 
-    // --- Watchlist Logic (Preserved) ---
+    
     const addToWatchlist = async (asteroid: Asteroid) => {
         if (!user) return alert("Please log in to use features.");
         try {
@@ -94,7 +94,7 @@ const DashboardPage: React.FC = () => {
         }
     }, [setLiveDataStatus]);
 
-    // --- Effects ---
+    
     useEffect(() => {
         setLoading(true);
         fetchData().finally(() => setLoading(false));
@@ -259,7 +259,7 @@ const DashboardPage: React.FC = () => {
     );
 };
 
-// --- Sub-Components (Preserved from team work) ---
+
 
 const NavBtn: React.FC<{ icon: React.ReactNode, onClick: () => void, active?: boolean, color?: string, label: string }> = ({ icon, onClick, active, color, label }) => (
     <button

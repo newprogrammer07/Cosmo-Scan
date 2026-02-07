@@ -24,8 +24,7 @@ const riskTextColorMap: Record<RiskLevel, string> = {
   [RiskLevel.Critical]: 'text-red-400',
 };
 
-/* ---------------- FOOTER (FIXED) ---------------- */
-// Changed bg-black/90 to bg-black (Solid) to prevent Earth from showing through
+
 const Footer = () => (
   <footer className="relative z-50 py-12 px-4 md:px-8 border-t border-white/10 bg-black">
     <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -58,7 +57,7 @@ const Footer = () => (
   </footer>
 );
 
-/* ---------------- MAIN PAGE ---------------- */
+
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const [liveAsteroids, setLiveAsteroids] = useState<Asteroid[]>([]);

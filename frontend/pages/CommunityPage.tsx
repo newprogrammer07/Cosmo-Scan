@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import GlassCard from '../components/GlassCard';
 import MagneticButton from '../components/MagneticButton';
 import { useAuthStore } from '../store/useAuthStore'; 
-import { useAppStore } from '../store/useAppStore'; // <--- IMPORT APP STORE
+import { useAppStore } from '../store/useAppStore'; 
 import { io } from 'socket.io-client';
 import { 
   LineChart, 
@@ -24,29 +24,29 @@ interface Message {
 }
 
 const CommunityPage: React.FC = () => {
-  // --- GET CURRENT USER ---
+  
   const { user } = useAuthStore(); 
   
-  // --- 1. USE GLOBAL STORE FOR CHART (So it doesn't reset) ---
+  
   const { communityChartData, addChartPoint } = useAppStore();
 
-  // --- CHAT STATE ---
+  
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  // Connect to your backend
+  
   const socket = useMemo(() => io('http://localhost:5000'), []);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // --- 2. FETCH CHAT HISTORY ON MOUNT ---
+  
   useEffect(() => {
     const fetchHistory = async () => {
       try {
         const res = await fetch('http://localhost:5000/messages');
         const data = await res.json();
         
-        // Only update if we actually got an array
+        
         if (Array.isArray(data) && data.length > 0) {
             setMessages(data);
         }
@@ -60,28 +60,27 @@ const CommunityPage: React.FC = () => {
     fetchHistory();
   }, []);
 
-  // --- CHAT SCROLL LOGIC ---
+  
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
   useEffect(scrollToBottom, [messages]);
 
-  // --- 3. PERSISTENT CHART SIMULATION ---
-  // Using global store 'addChartPoint' instead of local state
+  
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
       const timeString = now.toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
       const randomValue = Math.floor(Math.random() * (100 - 40 + 1)) + 40;
 
-      // Add to Global Store
+      
       addChartPoint({ time: timeString, value: randomValue });
     }, 2000);
 
     return () => clearInterval(interval);
   }, [addChartPoint]);
 
-  // --- 4. SOCKET LISTENERS ---
+  
   useEffect(() => {
     socket.on('receive_message', (data: Message) => {
       setMessages((prev) => [...prev, data]);
@@ -92,7 +91,7 @@ const CommunityPage: React.FC = () => {
     };
   }, [socket]);
 
-  // --- SEND MESSAGE HANDLER ---
+ 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (newMessage.trim() === '') return;
@@ -100,16 +99,16 @@ const CommunityPage: React.FC = () => {
     if (!user) return alert("Please log in to transmit messages.");
 
     const messageData = {
-      // id is handled by backend or temporary timestamp
+      
       user: user.name, 
       text: newMessage,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
 
-    // Emit to Socket Server
+    
     socket.emit('send_message', messageData);
     
-    // Optimistically add locally
+    
     setMessages((prev) => [...prev, { ...messageData, id: Date.now() }]);
     setNewMessage('');
   };

@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 export type LiveDataStatus = 'live' | 'idle' | 'error';
 
-// Define the Chart Point Type
+
 interface ChartPoint {
   time: string;
   value: number;
@@ -19,7 +19,7 @@ interface AppState {
   liveDataStatus: LiveDataStatus;
   setLiveDataStatus: (status: LiveDataStatus) => void;
 
-  // --- NEW: PERSISTENT CHART DATA ---
+  
   communityChartData: ChartPoint[];
   addChartPoint: (point: ChartPoint) => void;
 }
@@ -35,13 +35,13 @@ export const useAppStore = create<AppState>((set) => ({
   liveDataStatus: 'idle',
   setLiveDataStatus: (status) => set({ liveDataStatus: status }),
 
-  // Initialize with empty array
+  
   communityChartData: [],
 
-  // Action to add a new point and keep only the last 20 (Simulates live feed)
+  
   addChartPoint: (point) => set((state) => {
     const newData = [...state.communityChartData, point];
-    // Keep array size manageable (last 20 points)
+    
     return { 
       communityChartData: newData.length > 20 ? newData.slice(newData.length - 20) : newData 
     };
