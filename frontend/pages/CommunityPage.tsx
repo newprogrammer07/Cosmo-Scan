@@ -24,29 +24,20 @@ interface Message {
 }
 
 const CommunityPage: React.FC = () => {
-  // --- GET CURRENT USER ---
   const { user } = useAuthStore(); 
-  
-  // --- 1. USE GLOBAL STORE FOR CHART (So it doesn't reset) ---
   const { communityChartData, addChartPoint } = useAppStore();
-
-  // --- CHAT STATE ---
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-
-  // Connect to your backend
-  const socket = useMemo(() => io('http://localhost:5000'), []);
+  const socket = useMemo(() => io('https://cosmic-backend.onrender.com'), []);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // --- 2. FETCH CHAT HISTORY ON MOUNT ---
-  useEffect(() => {
+ useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await fetch('http://localhost:5000/messages');
+        const res = await fetch('https://cosmic-backend.onrender.com/messages');
         const data = await res.json();
         
-        // Only update if we actually got an array
         if (Array.isArray(data) && data.length > 0) {
             setMessages(data);
         }
@@ -60,21 +51,16 @@ const CommunityPage: React.FC = () => {
     fetchHistory();
   }, []);
 
-  // --- CHAT SCROLL LOGIC ---
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
   useEffect(scrollToBottom, [messages]);
-
-  // --- 3. PERSISTENT CHART SIMULATION ---
-  // Using global store 'addChartPoint' instead of local state
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
       const timeString = now.toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
       const randomValue = Math.floor(Math.random() * (100 - 40 + 1)) + 40;
 
-      // Add to Global Store
       addChartPoint({ time: timeString, value: randomValue });
     }, 2000);
 
