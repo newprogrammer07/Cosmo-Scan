@@ -81,38 +81,32 @@ const CommunityPage: React.FC = () => {
     return () => clearInterval(interval);
   }, [addChartPoint]);
 
-  // --- 4. SOCKET LISTENERS ---
-  useEffect(() => {
-    socket.on('receive_message', (data: Message) => {
-      setMessages((prev) => [...prev, data]);
+useEffect(() => {
+  socket.on('receive_message', (data: Message) => {
+    setMessages((prev) => {
+      const exists = prev.find(m => m.id === data.id);
+      if (exists) return prev;
+      return [...prev, data];
     });
+  });
 
-    return () => {
-      socket.off('receive_message');
-    };
-  }, [socket]);
-
-  // --- SEND MESSAGE HANDLER ---
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newMessage.trim() === '') return;
-
-    if (!user) return alert("Please log in to transmit messages.");
-
-    const messageData = {
-      // id is handled by backend or temporary timestamp
-      user: user.name, 
-      text: newMessage,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    };
-
-    // Emit to Socket Server
-    socket.emit('send_message', messageData);
-    
-    // Optimistically add locally
-    setMessages((prev) => [...prev, { ...messageData, id: Date.now() }]);
-    setNewMessage('');
+  return () => {
+    socket.off('receive_message');
   };
+}, [socket]);
+
+const handleSendMessage = (e: React.FormEvent) => {
+  e.preventDefault();
+  if (newMessage.trim() === '' || !user) return;
+
+  const messageData = {
+    user: user.name, 
+    text: newMessage,
+    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+  };
+  socket.emit('send_message', messageData);
+  setNewMessage('');
+};
 
   return (
     <div className="p-4 md:p-8 md:pl-28 min-h-screen flex flex-col bg-transparent font-mono selection:bg-neon-cyan/30">

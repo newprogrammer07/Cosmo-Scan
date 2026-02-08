@@ -290,7 +290,6 @@ app.get("/alerts", async (req, res) => {
   res.json(user.alerts);
 });
 
-
 app.post("/alerts", async (req, res) => {
   const { name, threshold, email } = req.body;
   const user = await prisma.user.findUnique({ where: { email } });
@@ -302,7 +301,6 @@ app.post("/alerts", async (req, res) => {
   res.json(newAlert);
 });
 
-
 app.patch("/alerts/:id", async (req, res) => {
   const { id } = req.params;
   const { enabled } = req.body;
@@ -313,36 +311,34 @@ app.patch("/alerts/:id", async (req, res) => {
   res.json(updatedAlert);
 });
 
-
 app.delete("/alerts/:id", async (req, res) => {
   const { id } = req.params;
   await prisma.alert.delete({ where: { id: Number(id) } });
   res.json({ success: true });
 });
 
-
-
 io.on("connection", (socket) => {
+  console.log("⚡ User connected:", socket.id);
+
   socket.on("send_message", async (data) => {
     try {
-      // Save to Database
-      await prisma.message.create({
+      const savedMessage = await prisma.message.create({
         data: {
           user: data.user,
           text: data.text,
           timestamp: data.timestamp
         }
       });
-      
-      // Send to everyone ELSE
-      socket.broadcast.emit("receive_message", data); 
+
+      console.log("💾 Message saved to DB:", savedMessage.id);
+      io.emit("receive_message", savedMessage); 
     } catch (err) {
-      console.error("Chat Error:", err);
+      console.error("❌ Chat Save Error:", err);
     }
   });
+
+  socket.on("disconnect", () => console.log("User disconnected"));
 });
-
-
 
 const calculateRiskScore = (obj: any) => {
    
