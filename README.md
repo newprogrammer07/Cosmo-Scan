@@ -26,13 +26,13 @@ The platform is fully containerised using **Docker**, making it easy to deploy a
 > Replace the links below after deployment
 
 - **🌐 Deployed Application:**  
-  _Paste deployed link here_
+  [ _Paste PPT link here_](https://cosmoscan.netlify.app/)
 
 - **🎥 Demo Video:**  
-  _Paste demo video link here_
+  [ _Paste PPT link here_](https://drive.google.com/file/d/1z5CxnUeItb6A84-6L9pusOI3eiF6oHcL/view?usp=drive_link)
 
 - **📊 Presentation (PPT):**  
-  _Paste PPT link here_
+ [ _Paste PPT link here_](https://docs.google.com/presentation/d/1BQhNjXSNDHkafFoskRmwrq1veJ7B8Os-/edit?usp=drive_link&ouid=116666437119853478801&rtpof=true&sd=true)
 
 ---
 
@@ -61,18 +61,19 @@ The platform is fully containerised using **Docker**, making it easy to deploy a
   - Velocity
   - Proximity to Earth
 - Clear, human-readable risk indicators
+- Updates automatically everyday @9 am
 
 ### 🔔 Alert & Notification System
 - Dashboard alerts for upcoming close approaches
 - Custom alert parameters per user
 - Scheduled risk notifications
 
-### 🌍 3D Visualisation (Bonus)
+### 🌍 3D Visualisation
 - Interactive 3D asteroid orbit visualisation
 - Shows asteroid trajectory relative to Earth
 - Built using modern 3D web technologies
 
-### 💬 Real-Time Chat (Bonus)
+### 💬 Real-Time Chat
 - Live community discussion threads
 - Asteroid-specific conversations
 - Powered by WebSockets / Socket.io
@@ -97,7 +98,7 @@ The platform is fully containerised using **Docker**, making it easy to deploy a
 - Secure authentication & authorization
 
 ### Database
-- MongoDB / PostgreSQL (as used)
+- PostgreSQL (Prisma Schema)
 
 ### APIs
 - NASA NeoWs (Near Earth Object Web Service)
