@@ -23,8 +23,6 @@ The platform is fully containerised using **Docker**, making it easy to deploy a
 
 ## 🔗 Important Links
 
-> Replace the links below after deployment
-
 - **🌐 Deployed Application:**  
   [ _Cosmo Scan_](https://cosmoscan.netlify.app/)
 
