@@ -189,6 +189,7 @@ Clean separation of frontend & backend
 ✅ Postman API documentation included
 
 🏆 Team Information
+
 👥 Team Name
 
 Juggernauts
