@@ -26,13 +26,13 @@ The platform is fully containerised using **Docker**, making it easy to deploy a
 > Replace the links below after deployment
 
 - **🌐 Deployed Application:**  
-  [ _Paste PPT link here_](https://cosmoscan.netlify.app/)
+  [ _Cosmo Scan_](https://cosmoscan.netlify.app/)
 
 - **🎥 Demo Video:**  
-  [ _Paste PPT link here_](https://drive.google.com/file/d/1z5CxnUeItb6A84-6L9pusOI3eiF6oHcL/view?usp=drive_link)
+  [ _Demo Video_](https://drive.google.com/file/d/1z5CxnUeItb6A84-6L9pusOI3eiF6oHcL/view?usp=drive_link)
 
 - **📊 Presentation (PPT):**  
- [ _Paste PPT link here_](https://docs.google.com/presentation/d/1BQhNjXSNDHkafFoskRmwrq1veJ7B8Os-/edit?usp=drive_link&ouid=116666437119853478801&rtpof=true&sd=true)
+ [ _PPT Link_](https://docs.google.com/presentation/d/1BQhNjXSNDHkafFoskRmwrq1veJ7B8Os-/edit?usp=drive_link&ouid=116666437119853478801&rtpof=true&sd=true)
 
 ---
 
