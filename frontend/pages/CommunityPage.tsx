@@ -23,7 +23,7 @@ interface Message {
   timestamp: string;
 }
 
-const BACKEND_URL = 'https://cosmic-backend.onrender.com';
+const BACKEND_URL = 'https://cosmic-backend-fibq.onrender.com';
 
 const CommunityPage: React.FC = () => {
   const { user } = useAuthStore();
