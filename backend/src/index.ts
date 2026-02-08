@@ -343,6 +343,7 @@ io.on("connection", (socket) => {
 });
 
 
+
 const calculateRiskScore = (obj: any) => {
    
     let diameter = obj.estimated_diameter?.meters?.estimated_diameter_max;
