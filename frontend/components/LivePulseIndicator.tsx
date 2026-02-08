@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { usePrefersReducedMotion } from '../hooks/useMedia';
 import { usePageVisibility } from '../hooks/usePageVisibility';

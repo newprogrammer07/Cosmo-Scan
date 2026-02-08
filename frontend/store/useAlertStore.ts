@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { useAuthStore } from './useAuthStore';
-// IMPORT THE CONFIG VARIABLE
 import { API_BASE_URL } from '../config'; 
 
 export interface Alert {
@@ -26,7 +25,6 @@ export const useAlertStore = create<AlertStore>((set) => ({
     if (!user) return;
 
     try {
-      // FIX: Use API_BASE_URL instead of hardcoded localhost
       const res = await fetch(`${API_BASE_URL}/alerts?email=${user.email}`);
       if (!res.ok) throw new Error("Failed to fetch alerts");
       
@@ -42,7 +40,6 @@ export const useAlertStore = create<AlertStore>((set) => ({
     if (!user) return;
 
     try {
-      // FIX: Use API_BASE_URL instead of hardcoded localhost
       const res = await fetch(`${API_BASE_URL}/alerts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -66,7 +63,7 @@ export const useAlertStore = create<AlertStore>((set) => ({
         )
       }));
 
-      // FIX: Use API_BASE_URL instead of hardcoded localhost
+      
       await fetch(`${API_BASE_URL}/alerts/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -83,7 +80,6 @@ export const useAlertStore = create<AlertStore>((set) => ({
         alerts: state.alerts.filter((a) => a.id !== id)
       }));
 
-      // FIX: Use API_BASE_URL instead of hardcoded localhost
       await fetch(`${API_BASE_URL}/alerts/${id}`, { method: 'DELETE' });
     } catch (error) {
       console.error("Failed to delete alert", error);

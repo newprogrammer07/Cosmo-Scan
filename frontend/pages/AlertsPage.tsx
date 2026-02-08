@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import GlassCard from '../components/GlassCard';
 import MagneticButton from '../components/MagneticButton';
-import { useAlertStore } from '../store/useAlertStore'; // <--- NEW STORE
+import { useAlertStore } from '../store/useAlertStore'; 
 import { TrashIcon, BellIcon, ShieldAlertIcon } from '../components/icons';
 
 const AlertsPage: React.FC = () => {

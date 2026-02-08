@@ -1,6 +1,4 @@
-
 import { useState, useEffect } from 'react';
-
 
 export const usePageVisibility = (): boolean => {
   const [isVisible, setIsVisible] = useState(() => !document.hidden);

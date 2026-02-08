@@ -1,5 +1,3 @@
-
-
 import React, { Suspense, useRef, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Canvas, useFrame } from '@react-three/fiber';
@@ -127,7 +125,6 @@ const SceneContent: React.FC = () => {
     </>
   );
 };
-
 
 const ThreeBackground: React.FC = () => {
   return (

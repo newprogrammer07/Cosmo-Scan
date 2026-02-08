@@ -1,5 +1,4 @@
 import { User } from '../store/useAuthStore';
-// IMPORT THE CONFIG VARIABLE
 import { API_BASE_URL } from '../config'; 
 
 export interface AuthResponse {
@@ -8,7 +7,6 @@ export interface AuthResponse {
 }
 
 export const login = async (email: string, password: string): Promise<AuthResponse> => {
-    // FIX: Use API_BASE_URL instead of hardcoded localhost
     const response = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         headers: {
@@ -27,7 +25,6 @@ export const login = async (email: string, password: string): Promise<AuthRespon
 };
 
 export const signup = async (name: string, email: string, password: string): Promise<{ success: boolean }> => {
-    // FIX: Use API_BASE_URL instead of hardcoded localhost
     const response = await fetch(`${API_BASE_URL}/signup`, {
         method: 'POST',
         headers: {

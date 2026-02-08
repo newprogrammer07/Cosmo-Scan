@@ -16,9 +16,7 @@ const AppLayout: React.FC = () => {
 
   
   const activeAlertsCount = alerts.filter(a => a.enabled).length;
-
   const showNav = !(isCommandCenterMode && location.pathname === '/dashboard');
-
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
     

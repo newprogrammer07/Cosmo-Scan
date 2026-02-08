@@ -1,4 +1,3 @@
-
 export interface TourStep {
   selector: string;
   content: string;

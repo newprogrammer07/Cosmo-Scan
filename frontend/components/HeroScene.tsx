@@ -12,7 +12,6 @@ declare global {
   }
 }
 
-
 const Earth = () => {
   const meshRef = useRef<THREE.Mesh>(null!);
   

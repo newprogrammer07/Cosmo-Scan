@@ -35,9 +35,7 @@ export const useAppStore = create<AppState>((set) => ({
   liveDataStatus: 'idle',
   setLiveDataStatus: (status) => set({ liveDataStatus: status }),
 
-  
   communityChartData: [],
-
   
   addChartPoint: (point) => set((state) => {
     const newData = [...state.communityChartData, point];

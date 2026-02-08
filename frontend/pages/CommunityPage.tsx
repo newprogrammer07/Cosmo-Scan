@@ -4,7 +4,6 @@ import MagneticButton from '../components/MagneticButton';
 import { useAuthStore } from '../store/useAuthStore'; 
 import { useAppStore } from '../store/useAppStore'; 
 import { io } from 'socket.io-client';
-// IMPORT THE CONFIG VARIABLE HERE
 import { API_BASE_URL } from '../config'; 
 import { 
   LineChart, 
@@ -33,17 +32,13 @@ const CommunityPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-
-  // FIX 1: Use the dynamic API URL for the Socket connection
   const socket = useMemo(() => io(API_BASE_URL), []);
   
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Load Chat History
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        // FIX 2: Use the dynamic API URL for fetching data
         const res = await fetch(`${API_BASE_URL}/messages`);
         const data = await res.json();
         
@@ -65,7 +60,6 @@ const CommunityPage: React.FC = () => {
   };
   useEffect(scrollToBottom, [messages]);
 
-  // Simulate Random Data for the Chart (Client-side visual only)
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
@@ -78,7 +72,6 @@ const CommunityPage: React.FC = () => {
     return () => clearInterval(interval);
   }, [addChartPoint]);
 
-  // Listen for incoming messages via Socket
   useEffect(() => {
     socket.on('receive_message', (data: Message) => {
       setMessages((prev) => [...prev, data]);
@@ -89,7 +82,6 @@ const CommunityPage: React.FC = () => {
     };
   }, [socket]);
 
-  // Handle Sending Messages
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (newMessage.trim() === '') return;
@@ -102,10 +94,8 @@ const CommunityPage: React.FC = () => {
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
 
-    // Emit to Backend
     socket.emit('send_message', messageData);
     
-    // Optimistically add to UI
     setMessages((prev) => [...prev, { ...messageData, id: Date.now() }]);
     setNewMessage('');
   };
