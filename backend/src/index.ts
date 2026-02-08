@@ -323,13 +323,9 @@ app.delete("/alerts/:id", async (req, res) => {
 
 
 io.on("connection", (socket) => {
-  console.log("⚡ A user connected:", socket.id);
-
   socket.on("send_message", async (data) => {
-    console.log("Message received:", data);
-
-    
     try {
+      // Save to Database
       await prisma.message.create({
         data: {
           user: data.user,
@@ -337,18 +333,15 @@ io.on("connection", (socket) => {
           timestamp: data.timestamp
         }
       });
+      
+      // Send to everyone ELSE
+      socket.broadcast.emit("receive_message", data); 
     } catch (err) {
-      console.error("Failed to save message to DB:", err);
+      console.error("Chat Error:", err);
     }
-
-    
-    socket.broadcast.emit("receive_message", data);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
   });
 });
+
 
 const calculateRiskScore = (obj: any) => {
    
