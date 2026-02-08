@@ -1,45 +1,204 @@
-# 🌌 Cosmo Scan - Interstellar Asteroid Tracker
+# 🌌 Cosmo Scan – Interstellar Asteroid Tracker & Risk Analyser
 
-> **A full-stack, containerized platform for real-time Near-Earth Object (NEO) monitoring, risk analysis, and community alerts.**
+A full-stack web platform for **real-time monitoring, risk analysis, and visualisation of Near-Earth Objects (NEOs)** using live space-agency data.
 
-![Project Banner](https://img.shields.io/badge/Status-Hackathon_Ready-success?style=for-the-badge) 
-![Docker](https://img.shields.io/badge/Docker-Enabled-blue?logo=docker&style=for-the-badge)
-![Tech Stack](https://img.shields.io/badge/Stack-PERN-blueviolet?style=for-the-badge)
-
-## 📖 Project Overview
-Cosmo Scan simplifies complex space data from NASA into an accessible, user-friendly dashboard. It features a custom **Risk Analysis Engine** that evaluates asteroids based on velocity, diameter, and miss distance to assign a "Threat Score" (0-100). Users can track hazardous objects, receive alerts, and discuss findings in real-time.
+This project was built as part of a hackathon challenge to make complex asteroid trajectory data **accessible, understandable, and actionable** for researchers, enthusiasts, and the general public.
 
 ---
 
-## 🚀 Key Features
-* **Real-Time NASA Feed:** Fetches live asteroid data from the NASA NeoWs API.
-* **Risk Analysis Engine:** Algorithms calculate a "Risk Score" (Critical, High, Moderate, Low) for every object.
-* **Interactive Dashboard:** View asteroid details, orbital data, and visualize approach vectors.
-* **User System:** Secure Authentication (Signup/Login) to save a personal **Watchlist**.
-* **Community Chat:** Real-time discussion threads powered by WebSockets (Socket.io).
-* **Containerized Deployment:** Fully Dockerized with multi-stage builds for easy setup.
+## 🚀 Project Overview
+
+**Cosmic Watch** fetches real-time asteroid data from the **NASA NeoWs API** and presents it through an interactive dashboard that allows users to:
+
+- Track Near-Earth Objects in real time  
+- Analyse asteroid risk levels based on scientific parameters  
+- Save and monitor specific asteroids  
+- Receive alerts for close-approach events  
+- Visualise asteroid orbits relative to Earth  
+- Collaborate via live discussions  
+
+The platform is fully containerised using **Docker**, making it easy to deploy and test.
 
 ---
 
-## 🛠️ Tech Stack
-* **Frontend:** React.js (Vite), Tailwind CSS, Framer Motion
-* **Backend:** Node.js, Express.js, Socket.io
-* **Database:** PostgreSQL (with Prisma ORM)
-* **DevOps:** Docker, Docker Compose (Multi-stage builds)
+## 🔗 Important Links
+
+> Replace the links below after deployment
+
+- **🌐 Deployed Application:**  
+  _Paste deployed link here_
+
+- **🎥 Demo Video:**  
+  _Paste demo video link here_
+
+- **📊 Presentation (PPT):**  
+  _Paste PPT link here_
 
 ---
 
-## ⚙️ Prerequisites
-To run this project, you only need **one** tool installed:
-* [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Ensure it is running)
+## ✨ Features Implemented
 
-*Note: You do **NOT** need Node.js or PostgreSQL installed on your machine. Docker handles everything.*
+### 🔐 User Authentication & Verification
+- Secure user registration and login
+- JWT-based authentication
+- Password hashing and secure session handling
+- User-specific saved (watched) asteroids
+
+### 📡 Real-Time Asteroid Data Feed
+- Live integration with **NASA NeoWs API**
+- Displays:
+  - Asteroid name & ID
+  - Estimated diameter
+  - Relative velocity
+  - Missed distance from Earth
+  - Close-approach date
+
+### ⚠️ Risk Analysis Engine
+- Automatic classification of asteroids as:
+  - Hazardous / Non-Hazardous
+- Risk scoring based on:
+  - Diameter
+  - Velocity
+  - Proximity to Earth
+- Clear, human-readable risk indicators
+
+### 🔔 Alert & Notification System
+- Dashboard alerts for upcoming close approaches
+- Custom alert parameters per user
+- Scheduled risk notifications
+
+### 🌍 3D Visualisation (Bonus)
+- Interactive 3D asteroid orbit visualisation
+- Shows asteroid trajectory relative to Earth
+- Built using modern 3D web technologies
+
+### 💬 Real-Time Chat (Bonus)
+- Live community discussion threads
+- Asteroid-specific conversations
+- Powered by WebSockets / Socket.io
+
+### 🐳 Containerised Deployment
+- Fully Dockerised frontend, backend, and database
+- `docker-compose.yml` for one-command setup
+- Production-ready container structure
 
 ---
 
-## 📦 How to Run (1-Click Setup)
+## 🧠 Tech Stack
 
-### 1. Clone the Repository
-```bash
-git clone (https://github.com/newprogrammer07/Cosmo-Scan.git)
-cd cosmo-Scan
+### Frontend
+- React / Next.js
+- Modern UI with dark space-themed design
+- Responsive layout
+
+### Backend
+- Node.js / Express (or FastAPI if applicable)
+- RESTful API architecture
+- Secure authentication & authorization
+
+### Database
+- MongoDB / PostgreSQL (as used)
+
+### APIs
+- NASA NeoWs (Near Earth Object Web Service)
+
+### DevOps
+- Docker & Docker Compose
+- Git & GitHub version control
+
+---
+
+## 🧪 API Documentation
+
+- A **fully documented Postman Collection** is included in the repository
+- Covers:
+  - Asteroid feed endpoints
+  - Lookup endpoints
+  - User profile & authentication endpoints
+- Includes environment variables and test cases
+
+📁 Location:  
+/postman/Cosmo_Scan_API.postman_collection.json
+
+---
+
+## 🐳 Running the Project Using Docker Only
+
+### Prerequisites
+Make sure you have:
+- **Docker**
+- **Docker Compose**
+
+Installed on your system.
+
+---
+
+### 🔧 Steps to Run
+
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd cosmic-watch
+2. **Create environment files
+
+  Add required environment variables in:
+
+    backend/.env
+    frontend/.env
+    
+3. **Build and start containers
+   
+       docker-compose up --build
+
+4. **Access the application
+
+    Frontend: http://localhost:3000
+
+    Backend API: http://localhost:5000 (or configured port)
+
+5. **Stop containers
+
+    docker-compose down
+
+🔐 Security Practices Followed
+
+Password hashing
+
+JWT authentication
+
+Secure API access
+
+Environment variable protection
+
+Clean separation of frontend & backend
+
+📜 Hackathon Compliance
+
+✅ All code written during the hackathon timeframe
+
+✅ No plagiarism or direct code copying
+
+✅ AI-LOG.md included to document LLM assistance
+
+✅ GitHub submission before deadline
+
+✅ Working demo available
+
+✅ Dockerised deployment
+
+✅ Postman API documentation included
+
+🏆 Team Information
+👥 Team Name
+
+Juggernauts
+
+👤 Team Members
+
+Siddharth Kumar Jena
+
+Ashutosh Nayak
+
+Ayutayam Sutar
+
+Sushree Adyasha Sahoo
