@@ -320,7 +320,7 @@ app.delete("/alerts/:id", async (req, res) => {
 io.on("connection", (socket) => {
   socket.on("send_message", async (data) => {
     try {
-      // 1. Save to Prisma (Database)
+      // 1. Save to Neon Database via Prisma
       const savedMessage = await prisma.message.create({
         data: {
           user: data.user,
@@ -328,11 +328,10 @@ io.on("connection", (socket) => {
           timestamp: data.timestamp
         }
       });
-      
-      // 2. Broadcast to ALL connected clients so it shows up for everyone
+      // 2. IMPORTANT: Emit to EVERYONE so the sender sees it too
       io.emit("receive_message", savedMessage); 
     } catch (err) {
-      console.error("Failed to save/broadcast message:", err);
+      console.error("Database error:", err);
     }
   });
 });
