@@ -18,13 +18,14 @@ app.use(express.json());
 
 const httpServer = createServer(app);
 
-
 const io = new Server(httpServer, {
+  path: "/socket.io",
   cors: {
-    origin: "http://localhost:3000", 
-    methods: ["GET", "POST"]
-  }
+    origin: "*", // allow Render + localhost
+    methods: ["GET", "POST"],
+  },
 });
+
 
 
 const NASA_API_KEY = "WNPkhdFsOd6iXQPXbufix0CCiBZ5IxBdv694hwRh"; 
@@ -318,21 +319,27 @@ app.delete("/alerts/:id", async (req, res) => {
 });
 
 io.on("connection", (socket) => {
+  console.log("🟢 User connected:", socket.id);
+
   socket.on("send_message", async (data) => {
     try {
-      // 1. Save to Neon Database via Prisma
       const savedMessage = await prisma.message.create({
         data: {
           user: data.user,
           text: data.text,
-          timestamp: data.timestamp
-        }
+          timestamp: data.timestamp,
+        },
       });
-      // 2. IMPORTANT: Emit to EVERYONE so the sender sees it too
-      io.emit("receive_message", savedMessage); 
+
+      // emit to everyone INCLUDING sender
+      io.emit("receive_message", savedMessage);
     } catch (err) {
-      console.error("Database error:", err);
+      console.error("❌ Message save error:", err);
     }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("🔴 User disconnected:", socket.id);
   });
 });
 
